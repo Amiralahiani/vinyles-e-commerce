@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,6 +39,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+
+    /**
+     * @var Collection<int, Commande>
+     */
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'user')]
+    private Collection $no;
+
+    public function __construct()
+    {
+        $this->no = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -117,6 +133,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getNo(): Collection
+    {
+        return $this->no;
+    }
+
+    public function addNo(Commande $no): static
+    {
+        if (!$this->no->contains($no)) {
+            $this->no->add($no);
+            $no->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNo(Commande $no): static
+    {
+        if ($this->no->removeElement($no)) {
+            // set the owning side to null (unless already changed)
+            if ($no->getUser() === $this) {
+                $no->setUser(null);
+            }
+        }
 
         return $this;
     }

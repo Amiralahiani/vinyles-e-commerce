@@ -23,6 +23,7 @@ security:
                 path: logout
                 target: /
             custom_authenticator: App\Security\ApploginAuthenticator
+            entry_point: App\Security\ApploginAuthenticator
 
             remember_me:
                 secret: '%kernel.secret%'
