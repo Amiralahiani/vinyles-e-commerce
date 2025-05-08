@@ -29,7 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles = [];//user peut etre admin ou pas
 
     /**
      * @var string The hashed password
@@ -38,18 +38,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column]
-    private bool $isVerified = false;
+    private bool $isVerified = false;//pour dire si le user a verifié son email qu'il a reçu ou pas
 
 
     /**
      * @var Collection<int, Commande>
      */
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'user')]
-    private Collection $no;
+    private Collection $commandes;//liste des commandes faites par le user
 
     public function __construct()
     {
-        $this->no = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,27 +141,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Commande>
      */
-    public function getNo(): Collection
+    public function getCommandes(): Collection
     {
-        return $this->no;
+        return $this->commandes;
     }
 
-    public function addNo(Commande $no): static
+    public function addCommande(Commande $commande): static
     {
-        if (!$this->no->contains($no)) {
-            $this->no->add($no);
-            $no->setUser($this);
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeNo(Commande $no): static
+    public function removeCommade(Commande $commande): static
     {
-        if ($this->no->removeElement($no)) {
+        if ($this->commandes->removeElement($commande)) {
             // set the owning side to null (unless already changed)
-            if ($no->getUser() === $this) {
-                $no->setUser(null);
+            if ($commande->getUser() === $this) {
+                $commande->setUser(null);
             }
         }
 
