@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos{% endblock %}
+
+{% block content %}
+<section class="px-6 py-24 bg-gradient-to-b from-white via-[#f0f4f5] to-[#e5f7f8] text-[#1e1e1e]">
+  <div class="max-w-4xl mx-auto text-center">
+    <h1 class="text-3xl font-bold text-[#9b0d1f] mb-6">Qui sommes-nous ?</h1>
+    <p class="text-lg text-gray-700 leading-relaxed">
+      Retro Commerce est une boutique en ligne dédiée aux passionnés de musique et de vinyles. 
+      Nous sélectionnons soigneusement chaque album pour garantir qualité sonore et authenticité.
+      Que vous soyez amateur de rock classique, de jazz intemporel ou de nouveautés pop, 
+      nous avons le disque qu'il vous faut.
+    </p>
+    <p class="text-md text-gray-600 mt-6">
+      Notre mission est de faire revivre la magie du vinyle en proposant un service rapide, 
+      sécurisé et humain.
+    </p>
+    <div class="mt-10">
+      <a href="{{ path('app_contact') }}" class="inline-block px-6 py-2 bg-[#9b0d1f] text-white rounded hover:bg-[#b31226] transition">
+        Contactez-nous
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

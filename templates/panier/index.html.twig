@@ -1,20 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PanierController!{% endblock %}
+{% block title %}Votre panier{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block content %}
+<section class="px-6 py-24 bg-gradient-to-b from-[#ffffff] via-[#f0f4f5] to-[#e5f7f8] text-[#1e1e1e]">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold text-center text-[#9b0d1f] mb-12">Votre Panier</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <!-- Liste des articles -->
+      <div class="md:col-span-2 space-y-8">
+        {% for ligne in panier %}
+          {% set produit = ligne.produit %}
+          {% set quantite = ligne.quantity %}
+          <div class="bg-white p-6 rounded shadow flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+              <img src="{{ asset(produit.image) }}" alt="vinyle" class="w-24 h-24 rounded-full object-cover shadow-sm spin-hover-in-place bg-white">
+              <div>
+                <h3 class="text-lg font-bold">{{ produit.title }}</h3>
+                <p class="text-sm text-gray-600">{{ produit.artist.name }}</p>
+                <p class="text-sm text-gray-600">{{ produit.Category.name }}</p>
+              </div>
+            </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/malek/vinyles-e-commerce/src/Controller/PanierController.php</code></li>
-        <li>Your template at <code>C:/Users/malek/vinyles-e-commerce/templates/panier/index.html.twig</code></li>
-    </ul>
-</div>
+            <div class="text-right space-y-2">
+              <p class="text-[#9b0d1f] font-bold text-xl">{{ produit.price|number_format(2, ',', ' ') }} DT</p>
+
+              <!-- Formulaire de mise à jour quantité -->
+              <form method="post" action="{{ path('panier_update', { id: produit.id }) }}">
+                <input type="number" name="quantity" value="{{ quantite }}" min="1" class="w-16 px-2 py-1 border rounded">
+                <button type="submit" class="ml-2 text-sm text-blue-600 hover:underline">Mettre à jour</button>
+              </form>
+
+              <!-- Formulaire de suppression -->
+              <form method="post" action="{{ path('panier_delete', { id: produit.id }) }}">
+                <button type="submit" class="text-sm text-red-500 hover:underline">Supprimer</button>
+              </form>
+            </div>
+          </div>
+        {% else %}
+          <p class="text-center text-gray-600 mb-12">Votre panier est vide.</p>
+        {% endfor %}
+      </div>
+
+      <!-- Résumé -->
+      {% if panier|length > 0 %}
+        <div class="bg-white p-6 rounded shadow space-y-4">
+          <h2 class="text-xl font-semibold text-[#9b0d1f]">Résumé</h2>
+          <div class="flex justify-between">
+            <span>Sous-total</span>
+            <span>{{ total|number_format(2, ',', ' ') }} DT</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Frais de livraison</span>
+            <span>5,00 DT</span>
+          </div>
+          <hr>
+          <div class="flex justify-between font-bold text-lg">
+            <span>Total</span>
+            <span>{{ (total + 5)|number_format(2, ',', ' ') }} DT</span>
+          </div>
+          <a 
+            href="{% if app.user %}{{ path('app_commande') }}{% else %}{{ path('app_login') }}{% endif %}" 
+            class="mt-4 block w-full text-center bg-[#9b0d1f] hover:bg-[#b31226] text-white py-2 px-4 rounded transition">
+            Passer à la caisse
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
 {% endblock %}

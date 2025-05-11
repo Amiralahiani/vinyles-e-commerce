@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Admin | Retro Commerce{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  {% block styles %}{% endblock %}
+</head>
+<body class="bg-gray-100 text-[#1e1e1e]">
+  <!-- Navigation -->
+  <nav class="bg-[#1e1e1e] text-white p-4 flex justify-between items-center">
+    <div class="font-bold text-lg">Admin - Retro Commerce</div>
+    <ul class="flex space-x-6">
+      <li><a href="{{ path('admin_dashboard') }}" class="hover:underline">Dashboard</a></li>
+      <li><a href="{{ path('admin_produit_index') }}" class="hover:underline">Produits</a></li>
+      <li><a href="{{ path('admin_commande_index') }}" class="hover:underline">Commandes</a></li>
+      <li><a href="{{ path('app_home') }}" class="hover:underline">Site public</a></li>
+      <li><a href="{{ path('app_logout') }}" class="text-red hover:underline">Déconnexion</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenu principal -->
+  <main class="p-8">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block javascripts %}{% endblock %}
+</body>
+</html>

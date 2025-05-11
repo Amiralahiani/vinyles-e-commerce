@@ -1,20 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CommandeController!{% endblock %}
+{% block title %}Passer la commande{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block content %}
+<section class="px-6 py-24 bg-gradient-to-b from-[#ffffff] via-[#f4f4f4] to-[#e5f7f8] text-[#1e1e1e]">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-center text-[#9b0d1f] mb-12">Informations de commande</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <form method="post" action="{{ path('app_commande') }}" class="space-y-6 bg-white p-8 rounded shadow" novalidate>
+      <div>
+        <label for="nom" class="block text-sm font-medium text-gray-700">Nom complet</label>
+        <input type="text" id="nom" name="nom" required class="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:ring-[#9b0d1f] focus:border-[#9b0d1f]">
+      </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/malek/vinyles-e-commerce/src/Controller/CommandeController.php</code></li>
-        <li>Your template at <code>C:/Users/malek/vinyles-e-commerce/templates/commande/index.html.twig</code></li>
-    </ul>
-</div>
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" id="email" name="email" required class="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:ring-[#9b0d1f] focus:border-[#9b0d1f]">
+      </div>
+
+      <div>
+        <label for="adresse" class="block text-sm font-medium text-gray-700">Adresse</label>
+        <textarea id="adresse" name="adresse" rows="3" required class="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:ring-[#9b0d1f] focus:border-[#9b0d1f]"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Mode de paiement</label>
+        <div class="space-y-2">
+          <label class="flex items-center space-x-2">
+            <input type="radio" name="paiement" value="livraison" checked>
+            <span>Espèces à la livraison</span>
+          </label>
+          <label class="flex items-center space-x-2">
+            <input type="radio" name="paiement" value="carte">
+            <span>Carte bancaire en ligne</span>
+          </label>
+        </div>
+      </div>
+
+    <a href="">
+      <div class="flex justify-between items-center">
+        <span class="text-xl font-bold">Total : {{ total|number_format(2, ',', ' ') }} €</span>
+        <button type="submit" class="bg-[#9b0d1f] text-white px-6 py-2 rounded hover:bg-[#b31226] transition">Valider la commande</button>
+      </div>
+    </a>
+    </form>
+  </div>
+</section>
 {% endblock %}

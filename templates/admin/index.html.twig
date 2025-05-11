@@ -1,0 +1,39 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block content %}
+<h1 class="text-4xl font-extrabold mb-10 text-[#1e1e1e]">Tableau de bord</h1>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+  <!-- Box Produits -->
+  <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-[#9b0d1f] text-3xl"><i class="fas fa-record-vinyl"></i></div>
+      <span class="text-sm text-gray-400 font-medium">Vinyles</span>
+    </div>
+    <p class="text-2xl font-bold text-gray-800">{{ totalProduits }}</p>
+    <p class="text-sm text-gray-500 mt-1">Produits enregistrés</p>
+  </div>
+
+  <!-- Box Commandes -->
+  <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-[#9b0d1f] text-3xl"><i class="fas fa-shopping-cart"></i></div>
+      <span class="text-sm text-gray-400 font-medium">Commandes</span>
+    </div>
+    <p class="text-2xl font-bold text-gray-800">{{ totalCommandes }}</p>
+    <p class="text-sm text-gray-500 mt-1">Commandes passées</p>
+  </div>
+
+  <!-- Box Utilisateurs -->
+  <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition duration-300">
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-[#9b0d1f] text-3xl"><i class="fas fa-users"></i></div>
+      <span class="text-sm text-gray-400 font-medium">Utilisateurs</span>
+    </div>
+    <p class="text-2xl font-bold text-gray-800">{{ totalUtilisateurs }}</p>
+    <p class="text-sm text-gray-500 mt-1">Comptes enregistrés</p>
+  </div>
+</div>
+{% endblock %}

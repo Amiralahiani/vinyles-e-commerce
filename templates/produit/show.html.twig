@@ -1,42 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Produit{% endblock %}
+{% block title %}{{ produit.title }}{% endblock %}
 
-{% block body %}
-    <h1>Produit</h1>
+{% block styles %}
+<style>
+  @keyframes spin {
+    100% { transform: rotate(360deg); }
+  }
+  .spin-hover:hover {
+    animation: spin 1.2s linear infinite;
+  }
+  .vinyle-style-hero {
+    border-radius: 50%;
+    width: 280px;
+    height: 280px;
+    margin: 0 auto 1rem;
+    position: relative;
+  }
+  .vinyle-style-hero::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: #9b0d1f;
+    border-radius: 50%;
+    border: 4px solid #e5f7f8;
+  }
+</style>
+{% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ produit.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ produit.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ produit.description }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ produit.price }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ produit.image }}</td>
-            </tr>
-            <tr>
-                <th>Stock</th>
-                <td>{{ produit.stock }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block content %}
+<section class="px-6 py-16 bg-gradient-to-b from-white via-gray-100 to-[#e5f7f8] text-[#1e1e1e]">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
 
-    <a href="{{ path('app_produit_index') }}">back to list</a>
+    <!-- Image -->
+      <div class=" flex justify-center">
+            <img src="{{ asset(produit.image) }}" alt="vinyle" class=" vinyle-style-hero spin-hover-in-place">
+          </div>
+ 
 
-    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">edit</a>
+    <!-- Infos produit -->
+    <div>
+      <h1 class="text-3xl font-bold text-[#9b0d1f] mb-4">{{ produit.title }}</h1>
+      <p class="text-lg text-gray-700 mb-2">Artiste : <span class="font-semibold">{{ produit.artist.name }}</span></p>
+      <p class="text-gray-700 leading-relaxed mb-6">{{ produit.description }}</p>
+      <p class="text-2xl font-bold text-[#9b0d1f] mb-6">{{ produit.price|number_format(2, ',', ' ') }} DT</p>
+      <form method="post" action="{{ path('panier_add', { id: produit.id }) }}">
+        <button class="bg-[#9b0d1f] text-white px-6 py-2 rounded hover:bg-[#b31226] transition">
+          Ajouter au panier
+        </button>
+      </form>
+    </div>
 
-    {{ include('produit/_delete_form.html.twig') }}
+  </div>
+</section>
 {% endblock %}

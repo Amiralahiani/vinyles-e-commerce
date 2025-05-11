@@ -1,0 +1,52 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modifier le produit{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Modifier le vinyle</h1>
+
+<form method="post" action="{{ path('admin_produit_edit', {id: produit.id}) }}" enctype="multipart/form-data" class="bg-white p-6 rounded shadow space-y-4 max-w-xl">
+  
+  <div>
+    <label for="nom" class="block text-sm font-medium">Nom du vinyle</label>
+    <input type="text" id="nom" name="nom" value="{{ produit.title }}" required class="mt-1 block w-full border border-gray-300 rounded px-3 py-2">
+  </div>
+
+  <div>
+    <label for="artiste" class="block text-sm font-medium">Artiste</label>
+    <input type="text" id="artiste" name="artiste" value="{{ produit.artist.name }}" required class="mt-1 block w-full border border-gray-300 rounded px-3 py-2">
+  </div>
+
+  <div>
+    <label for="stock" class="block text-sm font-medium">Stock</label>
+    <input type="number" id="stock" name="stock" value="{{ produit.stock }}" required class="mt-1 block w-full border border-gray-300 rounded px-3 py-2">
+  </div>
+
+  <div>
+    <label for="categorie" class="block text-sm font-medium">Catégorie</label>
+    <input type="text" id="categorie" name="categorie" value="{{ produit.category.name }}" required class="mt-1 block w-full border border-gray-300 rounded px-3 py-2">
+  </div>
+
+  <div>
+    <label for="prix" class="block text-sm font-medium">Prix (DT)</label>
+    <input type="number" id="prix" name="prix" step="0.01" value="{{ produit.price }}" required class="mt-1 block w-full border border-gray-300 rounded px-3 py-2">
+  </div>
+
+  <div>
+    <label for="description" class="block text-sm font-medium">Description</label>
+    <textarea id="description" name="description" rows="4" class="mt-1 block w-full border border-gray-300 rounded px-3 py-2">{{ produit.description }}</textarea>
+  </div>
+
+  <div>
+    <label for="image" class="block text-sm font-medium">Image (laisser vide pour conserver l'actuelle)</label>
+    <input type="file" id="image" name="image" class="mt-1 block w-full border border-gray-300 rounded px-3 py-2">
+  </div>
+
+  <div class="text-right pt-4">
+    <button type="submit" class="bg-[#9b0d1f] text-white px-6 py-2 rounded hover:bg-[#b31226] transition">
+      Mettre à jour
+    </button>
+  </div>
+
+</form>
+{% endblock %}

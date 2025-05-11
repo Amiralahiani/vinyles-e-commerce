@@ -3,15 +3,16 @@
 namespace App\Service;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use App\Repository\ProductRepository;
-use App\Entity\Product;
+use App\Repository\ProduitRepository;
+use App\Entity\Produit;
 
-class PaniertService
+
+class PanierService
 {
     private SessionInterface $session;
-    private ProductRepository $repo;
+    private ProduitRepository $repo;
 
-    public function __construct(RequestStack $requestStack, ProductRepository $repo)
+    public function __construct(RequestStack $requestStack, ProduitRepository $repo)
     {
         $this->session = $requestStack->getSession();
         $this->repo = $repo;
@@ -19,28 +20,28 @@ class PaniertService
 
     public function add(int $id): void
     {
-        $cart = $this->session->get('cart', []);
-        $cart[$id] = ($cart[$id] ?? 0) + 1;
-        $this->session->set('cart', $cart);
+        $panier = $this->session->get('panier', []);
+        $panier[$id] = ($panier[$id] ?? 0) + 1;
+        $this->session->set('panier', $panier);
     }
 
     public function remove(int $id): void
     {
-        $cart = $this->session->get('cart', []);
-        unset($cart[$id]);
-        $this->session->set('cart', $cart);
+        $panier = $this->session->get('panier', []);
+        unset($panier[$id]);
+        $this->session->set('panier', $panier);
     }
 
-    public function getCartWithData(): array
+    public function getPanierWithData(): array
     {
-        $cart = $this->session->get('cart', []);
+        $panier = $this->session->get('panier', []);
         $data = [];
 
-        foreach ($cart as $id => $qty) {
-            $product = $this->repo->find($id);
-            if ($product instanceof Product) {
+        foreach ($panier as $id => $qty) {
+            $produit = $this->repo->find($id);
+            if ($produit instanceof Produit) {
                 $data[] = [
-                    'product' => $product,
+                    'produit' => $produit,
                     'quantity' => $qty,
                 ];
             }
@@ -52,8 +53,8 @@ class PaniertService
     public function getTotal(): float
     {
         $total = 0;
-        foreach ($this->getCartWithData() as $item) {
-            $total += $item['product']->getPrice() * $item['quantity'];
+        foreach ($this->getPanierWithData() as $item) {
+            $total += $item['produit']->getPrice() * $item['quantity'];
         }
 
         return $total;
@@ -61,6 +62,19 @@ class PaniertService
 
     public function clear(): void
     {
-        $this->session->remove('cart');
+        $this->session->remove('panier');
     }
+    public function updateQuantity(int $id, int $quantity): void
+{
+    $panier = $this->session->get('panier', []);
+
+    if ($quantity <= 0) {
+        unset($panier[$id]); // Supprime le produit si quantité <= 0
+    } else {
+        $panier[$id] = $quantity;
+    }
+
+    $this->session->set('panier', $panier);
+}
+
 }

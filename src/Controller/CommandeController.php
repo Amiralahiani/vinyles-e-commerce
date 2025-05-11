@@ -2,21 +2,32 @@
 
 namespace App\Controller;
 
+use App\Service\PanierService;
+use App\Entity\Commande;
+use App\Entity\CommandeProduit;
+use App\Repository\CommandeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 final class CommandeController extends AbstractController
 {
-    #[Route('/order/validate', name: 'order_validate')]
+    #[Route('/commande/validate', name: 'app_commande')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function validate(PanierService $panierService, EntityManagerInterface $em): Response
     {
         // Vérifie que le panier n'est pas vide
-        $items = $cartService->getCartWithData();
+        $items = $panierService->getpanierWithData();
         if (empty($items)) {
             $this->addFlash('warning', 'Votre panier est vide.');
-            return $this->redirectToRoute('cart_index');
+            return $this->redirectToRoute('panier_index');
+        }
+
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException("Vous devez être connecté pour valider une commande.");
         }
 
         // Créer une commande
@@ -30,20 +41,23 @@ final class CommandeController extends AbstractController
         foreach ($items as $item) {
             $commandeProduit = new CommandeProduit();
             $commandeProduit->setCommande($commande);
-            $commandeProduit->setProduct($item['product']);
-            $commandeProduit->setQuantity($item['quantity']);
-            $commandeProduit->setPrice($item['product']->getPrice());
+            $commandeProduit->setProduit($item['produit']);
+            $commandeProduit->setQuantite($item['quantity']);
+            $commandeProduit->setPrix($item['produit']->getPrice());
 
             $em->persist($commandeProduit);
         }
 
         $em->flush();
 
-        // Vider le panier
-        $panierService->clear();
+        
 
         $this->addFlash('success', 'Commande validée avec succès.');
 
-        return $this->redirectToRoute('panier_index');
+        return $this->render('commande/index.html.twig', [
+            'items' => $items,
+            'total' => $panierService->getTotal(),
+            'commande' => $commande,
+        ]);
     }
 }

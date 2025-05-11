@@ -1,28 +1,47 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion – Retro Commerce</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-{% block title %}Log in!{% endblock %}
+<body class="bg-gradient-to-b from-white via-[#f4f6f7] to-[#e5f7f8] text-[#1e1e1e]">
+  <!-- Header simplifié -->
+  <header class="flex items-center justify-between p-4 shadow-md bg-[#e5f7f8]">
+    <div class="flex items-center space-x-2">
+      <img src="{{ asset('uploads/produits/im.png') }}" alt="logo" class="w-8 h-8">
+      <span class="font-bold text-lg text-[#9b0d1f]">Retro Commerce</span>
+    </div>
+    <nav class="space-x-6">
+      <a href="{{ path('app_home') }}" class="text-sm font-medium text-[#1e1e1e]">Accueil</a>
+      <a href="{{ path('app_produit_index') }}" class="text-sm font-medium text-[#1e1e1e]">Vinyles</a>
+      <a href="{{ path('panier_index') }}" class="text-sm font-medium text-[#1e1e1e]">Panier</a>
+    </nav>
+  </header>
 
-{% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+  <section class="min-h-screen flex items-center justify-center px-4"
+    style="background: radial-gradient(circle at top left, #9b0d1f, #1e1e1e 40%, #e5f7f8 90%), linear-gradient(45deg, #2c2c2c, #3b3b3b); background-blend-mode: overlay;">
+    <div class="max-w-md w-full bg-white p-8 rounded shadow">
+      <h2 class="text-2xl font-bold text-center text-[#9b0d1f] mb-6">Se connecter</h2>
+      <form class="space-y-5" action="{{ path('app_login') }}" method="POST">
+        <div>
+          <label class="block mb-1 text-sm font-medium">Adresse e-mail</label>
+          <input type="email" name="_username" required class="w-full px-4 py-2 border border-gray-300 rounded" />
         </div>
-    {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-    <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
-{% endblock %}
+        <div>
+          <label class="block mb-1 text-sm font-medium">Mot de passe</label>
+          <input type="password" name="_password" required class="w-full px-4 py-2 border border-gray-300 rounded" />
+        </div>
+        <button type="submit"
+          class="w-full bg-[#9b0d1f] text-white py-2 rounded hover:bg-[#b31226] transition">Connexion</button>
+      </form>
+      <p class="text-center text-sm text-gray-600 mt-4">
+        Pas encore inscrit ?
+        <a href="{{ path('app_register') }}" class="text-[#9b0d1f] font-semibold hover:underline">Créer un compte</a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>
