@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block styles %}
+<style>
+  @keyframes spin {
+    100% { transform: rotate(360deg); }
+  }
+  .spin-hover:hover {
+    animation: spin 1.2s linear infinite;
+  }
+  .vinyle-style-hero {
+    border-radius: 50%;
+    width: 360px;
+    height: 360px;
+    margin: 0 auto 1rem;
+    position: relative;
+  }
+  .vinyle-style-hero::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: #9b0d1f;
+    border-radius: 50%;
+    border: 4px solid #e5f7f8;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="relative text-white py-28 mt-20 text-center" style="background: radial-gradient(circle at top left, #9b0d1f, #1e1e1e 40%, #e5f7f8 90%), linear-gradient(45deg, #2c2c2c, #3b3b3b); background-blend-mode: overlay;">
+  <h1 class="text-5xl font-extrabold mb-4 text-[#e5f7f8]" data-aos="fade-up">Découvrez notre collection de vinyles</h1>
+  <p class="mb-6 text-lg text-[#e5f7f8]" data-aos="fade-up" data-aos-delay="200">
+    Des classiques intemporels aux dernières sorties, trouvez le vinyle parfait pour enrichir votre collection.
+  </p>
+  <div class="space-x-4" data-aos="fade-up" data-aos-delay="400">
+    <a href="{{ path('app_apropos') }}" class="border border-white px-6 py-2 rounded font-semibold hover:bg-white hover:text-black transition">À propos de nous</a>
+    <a href="{{ path('app_vinyles') }}" class="bg-[#9b0d1f] text-white font-semibold px-6 py-2 rounded hover:bg-[#b31226] transition">Explorer la collection</a>
+  </div>
+  <div class="mt-20 flex justify-center">
+    <img src="{{ asset('im.png') }}" alt="vinyle" class="vinyle-style-hero spin-hover">
+  </div>
+</section>
+
+<section class="p-8">
+  <h2 class="text-2xl font-bold mb-6 text-black" data-aos="fade-right">Vinyles en vedette</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+    {% for vinyle in vedettes %}
+    <a href="{{ path('produit_show', { id: vinyle.id }) }}" class="block">
+      <div class="vinyle border rounded-lg p-4 text-center bg-white shadow-md transform hover:scale-105 transition duration-300" data-title="{{ vinyle.nom }}">
+        <div class="vinyle-style"></div>
+        <h3 class="font-bold text-lg">{{ vinyle.nom }}</h3>
+        <p class="text-sm text-gray-600">{{ vinyle.artiste }}</p>
+        <span class="text-xs bg-black text-white rounded px-2 py-0.5 mt-1 inline-block">Tendance</span>
+      </div>
+    </a>
+    {% else %}
+    <p class="text-center col-span-full text-gray-600">Aucun vinyle en vedette pour le moment.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="py-16 text-center">
+  <h2 class="text-2xl font-bold mb-8 text-black" data-aos="fade-up">Pourquoi Retro Commerce ?</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+    <div data-aos="flip-left">
+      <div class="text-black text-4xl mb-2"><i class="fas fa-record-vinyl"></i></div>
+      <h3 class="font-bold">Qualité vinyle</h3>
+      <p class="text-sm text-gray-700">Une sélection de vinyles testés et approuvés par des passionnés.</p>
+    </div>
+    <div data-aos="flip-left" data-aos-delay="100">
+      <div class="text-black text-4xl mb-2"><i class="fas fa-truck-fast"></i></div>
+      <h3 class="font-bold">Livraison rapide</h3>
+      <p class="text-sm text-gray-700">Expédition dans les 48h dans un emballage anti-choc.</p>
+    </div>
+    <div data-aos="flip-left" data-aos-delay="200">
+      <div class="text-black text-4xl mb-2"><i class="fas fa-headset"></i></div>
+      <h3 class="font-bold">Support dédié</h3>
+      <p class="text-sm text-gray-700">Assistance par des mélomanes pour les mélomanes.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

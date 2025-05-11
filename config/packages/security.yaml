@@ -17,13 +17,13 @@ security:
             lazy: true
             provider: app_user_provider
             form_login:
-                login_path: login
-                check_path: login
+                login_path: app_login
+                check_path: app_login
+                success_handler: App\Security\LoginSuccessHandler
+
             logout:
-                path: logout
-                target: /
-            custom_authenticator: App\Security\ApploginAuthenticator
-            entry_point: App\Security\ApploginAuthenticator
+                path: app_logout
+                target: app_home
 
             remember_me:
                 secret: '%kernel.secret%'
@@ -35,7 +35,7 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/produit/new, roles: ROLE_ADMIN }
         - { path: ^/produit/\d+/edit, roles: ROLE_ADMIN }
-        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: PUBLIC_ACCESS  }
 
 when@test:
     security:

@@ -1,0 +1,52 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Ajouter un vinyle{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Ajouter un vinyle</h1>
+
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}, 'class': 'max-w-xl bg-white p-6 rounded shadow space-y-4'}) }}
+
+  <div>
+    {{ form_label(form.title, 'Titre', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_widget(form.title, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded px-3 py-2'}}) }}
+  </div>
+
+  <div>
+    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_widget(form.description, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded px-3 py-2'}}) }}
+  </div>
+
+  <div>
+    {{ form_label(form.price, 'Prix (DT)', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_widget(form.price, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded px-3 py-2'}}) }}
+  </div>
+
+  <div>
+    {{ form_label(form.stock, 'Stock', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_widget(form.stock, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded px-3 py-2'}}) }}
+  </div>
+
+  <div>
+    {{ form_label(form.category_name, 'Catégorie', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_widget(form.category_name, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded px-3 py-2'}}) }}
+  </div>
+
+  <div>
+    {{ form_label(form.artist_name, 'Artiste', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_widget(form.artist_name, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded px-3 py-2'}}) }}
+  </div>
+
+  <div>
+    {{ form_label(form.image, 'Image', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_widget(form.image, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded px-3 py-2'}}) }}
+  </div>
+
+  <div class="text-right pt-4">
+    <button type="submit" class="bg-[#9b0d1f] text-white px-6 py-2 rounded hover:bg-[#b31226] transition">
+      Enregistrer
+    </button>
+  </div>
+
+{{ form_end(form) }}
+{% endblock %}

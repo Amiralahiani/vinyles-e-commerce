@@ -1,43 +1,112 @@
 {% extends 'base.html.twig' %}
+{% set categorie_active = categorie_active|default(null) %}
 
-{% block title %}Produit index{% endblock %}
+{% block title %}Nos vinyles{% endblock %}
+{% block styles %}<style>
+    @keyframes spin-on-hover {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-{% block body %}
-    <h1>Produit index</h1>
+.spin-hover-in-place:hover {
+  animation: spin-on-hover 1s linear infinite;
+}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Image</th>
-                <th>Stock</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for produit in produits %}
-            <tr>
-                <td>{{ produit.id }}</td>
-                <td>{{ produit.title }}</td>
-                <td>{{ produit.description }}</td>
-                <td>{{ produit.price }}</td>
-                <td>{{ produit.image }}</td>
-                <td>{{ produit.stock }}</td>
-                <td>
-                    <a href="{{ path('app_produit_show', {'id': produit.id}) }}">show</a>
-                    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+    .spin-hover:hover {
+      animation: spin 1.2s linear infinite;
+    }
+    .vinyle-style-hero {
+      border-radius: 50%;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto 1rem;
+      position: relative;
+    }
+    .vinyle-style-hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      background: #9b0d1f;
+      border-radius: 50%;
+      border: 4px solid #e5f7f8;
+    }
+    .vinyle-style {
+      background: radial-gradient(circle, #e5f7f8 10%, #000000 88%);
+      border-radius: 50%;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 1rem;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+    .vinyle-style::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background: #9b0d1f;
+      border-radius: 50%;
+      border: 2px solid #e5f7f8;
+    }
+  </style>{% endblock %}
+{% block content %}
+<section class="px-6 py-16 bg-white text-[#1e1e1e]">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-extrabold mb-6 text-center text-[#9b0d1f]">Notre sélection complète</h2>
 
-    <a href="{{ path('app_produit_new') }}">Create new</a>
+    <div class="flex flex-wrap gap-4 justify-center mb-8">
+  <a href="{{ path('app_produit_index') }}"
+     class="{% if categorie_active is null %}
+              bg-[#9b0d1f] text-white
+            {% else %}
+              bg-[#e5f7f8] hover:bg-[#d0eef0] text-[#1e1e1e]
+            {% endif %} font-medium px-4 py-2 rounded-full">
+    Tous
+  </a>
+
+  {% for categorie in categories %}
+    <a href="{{ path('app_produit_par_categorie', { nom: categorie.name }) }}"
+       class="{% if categorie_active == categorie.name %}
+                bg-[#9b0d1f] text-white
+              {% else %}
+                bg-[#e5f7f8] hover:bg-[#d0eef0] text-[#1e1e1e]
+              {% endif %} font-medium px-4 py-2 rounded-full">
+      {{ categorie.name }}
+    </a>
+  {% endfor %}
+</div>
+
+
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      {% for produit in produits %}
+      <a href="{{  path('app_produit_show', {'id': produit.id}) }}" class="block">
+        <div class="border rounded-lg p-4 bg-[#f9f9f9] shadow-md transform hover:scale-105 transition duration-300">
+          <div class=" flex justify-center">
+            <img src="{{ asset(produit.image) }}" alt="vinyle" class=" vinyle-style-hero spin-hover-in-place">
+          </div>
+          <h3 class="text-lg font-semibold">{{ produit.title }}</h3>
+          <p class="text-sm text-gray-600">{{ produit.artist.name }}</p>
+        </div>
+      </a>
+      {% else %}
+      <p class="text-center col-span-full text-gray-600">Aucun vinyle trouvé.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 {% endblock %}
