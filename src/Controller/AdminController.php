@@ -66,13 +66,19 @@ public function delete(Request $request, Produit $produit, EntityManagerInterfac
         ]);
     }
     
-    #[Route('/admin/commandes', name: 'admin_commande_index')]
-    public function commandes(CommandeRepository $commandeRepository): Response
-    {
-        return $this->render('admin/commandes/index.html.twig', [
-            'commandes' => $commandeRepository->findAll(),
-        ]);
-    }
+    // src/Controller/AdminController.php
+
+    // src/Controller/AdminController.php
+
+#[Route('/admin/commandes', name: 'admin_commande_index')]
+public function commandes(CommandeRepository $commandeRepository): Response
+{
+    $commandes = $commandeRepository->findAllWithDetails(); // Utilisez votre méthode personnalisée
+    
+    return $this->render('admin/commandes/index.html.twig', [
+        'commandes' => $commandes,
+    ]);
+}
     #[Route('/admin/new', name: 'admin_produit_new')]
 public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, CategoryRepository $categoryRepository, ArtistRepository $artistRepository): Response
 {

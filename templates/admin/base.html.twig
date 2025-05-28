@@ -6,7 +6,21 @@
   <title>{% block title %}Admin | Retro Commerce{% endblock %}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  {% block styles %}{% endblock %}
+
+  {% block styles %}<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    tr:hover {
+        background-color: #f7fafc;
+    }
+</style>{% endblock %}
 </head>
 <body class="bg-gray-100 text-[#1e1e1e]">
   <!-- Navigation -->

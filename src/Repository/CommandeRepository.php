@@ -15,7 +15,21 @@ class CommandeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commande::class);
     }
+    // src/Repository/CommandeRepository.php
+// src/Repository/CommandeRepository.php
 
+// src/Repository/CommandeRepository.php
+
+public function findAllWithDetails()
+{
+    return $this->createQueryBuilder('c')
+        ->select('c.id', 'c.createdAt', 'u.email as user_email', 'SUM(cp.prix * cp.quantite) as total')
+        ->join('c.user', 'u')
+        ->leftJoin('c.commandeProduits', 'cp')
+        ->groupBy('c.id')
+        ->getQuery()
+        ->getResult();
+}
 //    /**
 //     * @return Commande[] Returns an array of Commande objects
 //     */

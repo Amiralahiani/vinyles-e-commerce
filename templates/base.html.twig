@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Groove Commerce{% endblock %}</title>
-
+   <link rel="icon" href="{{ asset('uploads/produits/im.png') }}" type="image/png">
+  <link rel="apple-touch-icon" href="{{ asset('uploads/produits/im.png') }}">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
@@ -20,7 +21,7 @@
         <!-- Logo -->
         <div class="flex items-center space-x-2">
           <img src="{{ asset('uploads/produits/im.png') }}" alt="logo" class="w-9 h-8">
-          <span class="font-bold text-lg text-[#9b0d1f]">Retro Commerce</span>
+          <span class="font-bold text-lg text-[#9b0d1f]"><a href="{{ path('app_home') }}">Retro Commerce</a></span>
         </div>
 
         <!-- Hamburger Button -->

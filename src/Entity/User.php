@@ -3,10 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -22,34 +20,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'boolean')]
     private bool $isVerified = false;
 
-
-    /**
-     * @var Collection<int, Commande>
-     */
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'user')]
-    private Collection $no;
+    private Collection $commandes;
 
     public function __construct()
     {
-        $this->no = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
+        $this->roles = ['ROLE_USER']; // Role par défaut
     }
 
     public function getId(): ?int
@@ -65,13 +54,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
      * @see UserInterface
      */
     public function getUserIdentifier(): string
@@ -91,20 +77,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -112,7 +94,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -133,38 +114,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
-
         return $this;
     }
-
 
     /**
      * @return Collection<int, Commande>
      */
-    public function getNo(): Collection
+    public function getCommandes(): Collection
     {
-        return $this->no;
+        return $this->commandes;
     }
 
-    public function addNo(Commande $no): static
+    public function addCommande(Commande $commande): static
     {
-        if (!$this->no->contains($no)) {
-            $this->no->add($no);
-            $no->setUser($this);
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setUser($this);
         }
-
         return $this;
     }
 
-    public function removeNo(Commande $no): static
+    public function removeCommande(Commande $commande): static
     {
-        if ($this->no->removeElement($no)) {
+        if ($this->commandes->removeElement($commande)) {
             // set the owning side to null (unless already changed)
-            if ($no->getUser() === $this) {
-                $no->setUser(null);
+            if ($commande->getUser() === $this) {
+                $commande->setUser(null);
             }
         }
-
         return $this;
     }
 }

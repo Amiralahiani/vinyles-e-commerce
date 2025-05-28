@@ -1,0 +1,65 @@
+{# templates/admin/commandes/show.html.twig #}
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Commande #{{ commande.id }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Détails de la commande #{{ commande.id }}</h1>
+
+    <div class="bg-white p-6 rounded-lg shadow mb-6">
+        <h2 class="text-lg font-semibold mb-4">Informations client</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <p class="font-medium">Client:</p>
+                <p>{{ commande.user.email }}</p>
+            </div>
+            <div>
+                <p class="font-medium">Date:</p>
+                <p>{{ commande.createdAt|date('d/m/Y H:i') }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h2 class="text-lg font-semibold mb-4">Produits commandés</h2>
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-gray-100 text-left">
+                    <th class="p-3">Produit</th>
+                    <th class="p-3">Prix unitaire</th>
+                    <th class="p-3">Quantité</th>
+                    <th class="p-3">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in commande.commandeProduits %}
+                <tr class="border-b">
+                    <td class="p-3">{{ item.produit.name }}</td>
+                    <td class="p-3">{{ item.prix|number_format(2, ',', ' ') }} €</td>
+                    <td class="p-3">{{ item.quantite }}</td>
+                    <td class="p-3">{{ (item.prix * item.quantite)|number_format(2, ',', ' ') }} €</td>
+                </tr>
+                {% endfor %}
+                <tr class="font-bold bg-gray-50">
+                    <td colspan="3" class="p-3 text-right">Total commande:</td>
+                    <td class="p-3">
+                        {% set total = 0 %}
+                        {% for item in commande.commandeProduits %}
+                            {% set total = total + (item.prix * item.quantite) %}
+                        {% endfor %}
+                        {{ total|number_format(2, ',', ' ') }} €
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-6">
+        <a href="{{ path('admin_commande_index') }}" 
+           class="bg-[#9b0d1f] text-white px-4 py-2 rounded hover:bg-[#b31226] transition">
+            ← Retour à la liste
+        </a>
+    </div>
+</div>
+{% endblock %}
