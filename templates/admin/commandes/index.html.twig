@@ -12,20 +12,19 @@
       <th class="px-4 py-3">Client</th>
       <th class="px-4 py-3">Date</th>
       <th class="px-4 py-3">Montant</th>
-      <th class="px-4 py-3">Statut</th>
     </tr>
   </thead>
   <tbody>
     {% for commande in commandes %}
     <tr class="border-t text-sm">
-      <td class="px-4 py-3">#{{ commande.id }}</td>
-      <td class="px-4 py-3">{{ commande.date|date('d/m/Y') }}</td>
+      <td class="px-4 py-3">{{ commande.id }}</td>
+      <td class="px-4 py-3">{{ commande.user_email }}</td>
+      <td class="px-4 py-3">{{ commande.createdAt|date('d/m/Y H:i') }}</td>
       <td class="px-4 py-3">{{ commande.total|number_format(2, ',', ' ') }} €</td>
-      <td class="px-4 py-3">{{ commande.statut }}</td>
     </tr>
     {% else %}
     <tr>
-      <td colspan="5" class="px-4 py-6 text-center text-gray-500">Aucune commande enregistrée.</td>
+      <td colspan="4" class="px-4 py-6 text-center text-gray-500">Aucune commande enregistrée.</td>
     </tr>
     {% endfor %}
   </tbody>

@@ -65,16 +65,21 @@ class PanierService
         $this->session->remove('panier');
     }
     public function updateQuantity(int $id, int $quantity): void
-{
-    $panier = $this->session->get('panier', []);
+    {
+        $panier = $this->session->get('panier', []);
 
-    if ($quantity <= 0) {
-        unset($panier[$id]); // Supprime le produit si quantité <= 0
-    } else {
-        $panier[$id] = $quantity;
+        if ($quantity <= 0) {
+            unset($panier[$id]); // Supprime le produit si quantité <= 0
+        } else {
+            $panier[$id] = $quantity;
+        }
+
+        $this->session->set('panier', $panier);
     }
+    // src/Service/PanierService.php
 
-    $this->session->set('panier', $panier);
-}
-
+    public function viderPanier(): void
+    {
+        $this->session->remove('panier');
+    }
 }

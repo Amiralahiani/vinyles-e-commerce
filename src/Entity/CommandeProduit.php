@@ -13,11 +13,11 @@ class CommandeProduit
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeProduits')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Commande $commande = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Produit::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Produit $produit = null;
 
@@ -40,7 +40,6 @@ class CommandeProduit
     public function setCommande(?Commande $commande): static
     {
         $this->commande = $commande;
-
         return $this;
     }
 
@@ -52,7 +51,6 @@ class CommandeProduit
     public function setProduit(?Produit $produit): static
     {
         $this->produit = $produit;
-
         return $this;
     }
 
@@ -64,7 +62,6 @@ class CommandeProduit
     public function setQuantite(int $quantite): static
     {
         $this->quantite = $quantite;
-
         return $this;
     }
 
@@ -76,7 +73,6 @@ class CommandeProduit
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
-
         return $this;
     }
 }
