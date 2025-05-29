@@ -25,9 +25,12 @@ final class ProduitController extends AbstractController
     ]);
 }
 
-    #[Route('/recherche', name: 'app_recherche')]
-public function recherche(Request $request, ProduitRepository $produitRepository): Response
-{
+#[Route('/recherche', name: 'app_recherche')]
+public function recherche(
+    Request $request,
+    ProduitRepository $produitRepository,
+    CategoryRepository $categoryRepository
+): Response {
     $terme = $request->query->get('q');
 
     $produits = $produitRepository->createQueryBuilder('p')
@@ -40,6 +43,8 @@ public function recherche(Request $request, ProduitRepository $produitRepository
     return $this->render('produit/index.html.twig', [
         'produits' => $produits,
         'terme_recherche' => $terme,
+        'categories' => $categoryRepository->findAll(), 
+        'categorie_active' => null,
     ]);
 }
 
@@ -65,12 +70,23 @@ public function recherche(Request $request, ProduitRepository $produitRepository
     }
 
     #[Route('/{id}', name: 'app_produit_show', methods: ['GET'])]
-    public function show(Produit $produit): Response
+    public function show(Produit $produit, ProduitRepository $produitRepository): Response
     {
+        $produitsSimilaires = $produitRepository->createQueryBuilder('p')
+            ->where('p.Category = :Category')
+            ->andWhere('p.id != :id')
+            ->setParameter('Category', $produit->getCategory())
+            ->setParameter('id', $produit->getId())
+            ->setMaxResults(4)
+            ->getQuery()
+            ->getResult();
+
         return $this->render('produit/show.html.twig', [
             'produit' => $produit,
+            'similaires' => $produitsSimilaires,
         ]);
     }
+
 
     #[Route('/{id}/edit', name: 'app_produit_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
@@ -116,6 +132,9 @@ public function recherche(Request $request, ProduitRepository $produitRepository
         'categorie_active' => $nom,
     ]);
 }
+
+
+
     
 
 }

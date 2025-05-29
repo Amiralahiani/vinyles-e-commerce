@@ -56,5 +56,19 @@
     </div>
 
   </div>
+  {% if similaires|length > 0 %}
+  <h3 class="text-xl font-semibold mt-10 mb-4">Produits similaires</h3>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    {% for sim in similaires %}
+      <div class="bg-white shadow-md p-4 rounded">
+      <img src="{{ asset(sim.image) }}" alt="vinyle" class=" vinyle-style-hero spin-hover-in-place">
+        <h4 class="text-sm font-medium">{{ sim.title }}</h4>
+        <p class="text-sm text-gray-600">{{ sim.price }} DT</p>
+        <a href="{{ path('app_produit_show', {'id': sim.id}) }}" class="text-xs text-blue-600">Voir</a>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
 </section>
 {% endblock %}

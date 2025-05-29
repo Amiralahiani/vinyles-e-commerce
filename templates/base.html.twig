@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Groove Commerce{% endblock %}</title>
-   <link rel="icon" href="{{ asset('uploads/produits/im.png') }}" type="image/png">
+  <link rel="icon" href="{{ asset('uploads/produits/im.png') }}" type="image/png">
   <link rel="apple-touch-icon" href="{{ asset('uploads/produits/im.png') }}">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -12,7 +12,7 @@
   {% block styles %}{% endblock %}
 </head>
 
-<body class="bg-gradient-to-br from-white via-[#e5f7f8] to-gray-100 text-[#1e1e1e]">
+<body class="min-h-screen flex flex-col bg-gradient-to-br from-white via-[#e5f7f8] to-gray-100 text-[#1e1e1e]">
 
   <!-- Header -->
   <header class="bg-[#e5f7f8] fixed top-0 left-0 right-0 z-50 shadow-md">
@@ -43,15 +43,14 @@
               class="w-32 md:w-48 lg:w-64 px-3 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-[#9b0d1f]"
             />
           </form>
-
           <a href="{{ path('panier_index') }}" class="text-lg text-[#1e1e1e]"><i class="fas fa-shopping-cart"></i></a>
-          
+
           {% if app.user %}
+              <a href="{{ path('app_mes_commandes') }}" class="text-sm font-medium text-[#1e1e1e]">Mes commandes</a>
               <a href="{{ path('app_logout') }}"><button class="border px-3 py-1 rounded text-sm text-[#1e1e1e]">Se déconnecter</button></a>
           {% else %}
               <a href="{{ path('app_login') }}"><button class="border px-3 py-1 rounded text-sm text-[#1e1e1e]">Se connecter</button></a>
           {% endif %}
-
         </nav>
       </div>
 
@@ -67,14 +66,14 @@
             class="w-32 md:w-48 lg:w-64 px-3 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-[#9b0d1f]"
           />
         </form>
-
         <a href="{{ path('panier_index') }}" class="block text-lg text-[#1e1e1e]"><i class="fas fa-shopping-cart"></i> Panier</a>
         <a href="{{ path('app_login') }}"><button class="border px-3 py-1 rounded text-sm text-[#1e1e1e] w-full">Se connecter</button></a>
       </div>
     </div>
   </header>
 
-  <main class="pt-0 ">
+  <!-- Contenu principal -->
+  <main class="flex-grow pt-0">
     {% block content %}{% endblock %}
   </main>
 
@@ -105,42 +104,22 @@
       </div>
     </div>
     <div class="mt-8 text-sm text-center">
-      © 2025 Groove Commerce. Tous droits réservés.
+      © 2025 Retro Commerce. Tous droits réservés.
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init();
 
-    // Ajout d'une ombre quand on scrolle
     window.addEventListener("scroll", () => {
       const header = document.querySelector("header");
       header.classList.toggle("shadow-md", window.scrollY > 20);
     });
 
-    // Recherche desktop
-    document.getElementById('searchInput')?.addEventListener('input', function () {
-      const search = this.value.toLowerCase();
-      document.querySelectorAll('.vinyle').forEach(card => {
-        card.style.display = card.dataset.title.toLowerCase().includes(search) ? 'block' : 'none';
-      });
-    });
-
-    // Recherche mobile
-    document.getElementById('searchInputMobile')?.addEventListener('input', function () {
-      const search = this.value.toLowerCase();
-      document.querySelectorAll('.vinyle').forEach(card => {
-        card.style.display = card.dataset.title.toLowerCase().includes(search) ? 'block' : 'none';
-      });
-    });
-
-    // Toggle menu mobile
-    const toggleBtn = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-
-    toggleBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
+    document.getElementById('menu-toggle')?.addEventListener("click", () => {
+      document.getElementById("mobile-menu").classList.toggle("hidden");
     });
   </script>
 

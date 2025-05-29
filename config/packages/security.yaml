@@ -6,7 +6,7 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
+                property: email #la propriété de l'entité User qui est utilisée pour identifier les utilisateurs
 
     firewalls:
         dev:
@@ -14,22 +14,22 @@ security:
             security: false
 
         main:
-            lazy: true
-            provider: app_user_provider
+            lazy: true #permet de charger le firewall uniquement si nécessaire
+            provider: app_user_provider #le service qui est chargé de recuperer les données des utilisateurs
             form_login:
-                login_path: app_login
-                check_path: app_login
-                success_handler: App\Security\LoginSuccessHandler
-
+                login_path: app_login #symfony utilise cette route pour rediriger l'utilisateur s'il n'est pas un admin et essaie d'acceder à /admin 
+                check_path: app_login #la route ou symfony envoie lesdonnées du formulaire de connexion pour les traiter
+                success_handler: App\Security\LoginSuccessHandler #la classe qui gère ce qui se passe après une connexion réussie
             logout:
-                path: app_logout
-                target: app_home
+                path: app_logout #utiliser /logout pour se deconnecter
+                target: app_home #ou diriger après ma déconnexion (içi vers la page d'accueil)
 
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
                 path: /
                 always_remember_me: true
+            access_denied_handler: App\Security\AccessDeniedHandler #la route vers laquelle symfony redirige l'utilisateur s'il n'a pas les droits d'accès par defaut c erreur 403
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }

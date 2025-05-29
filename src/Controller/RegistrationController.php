@@ -16,30 +16,41 @@ use Symfony\Component\Routing\Attribute\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
-{
+{/*
     public function __construct(private EmailVerifier $emailVerifier)
     {
-    }
+    }*/
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(RegistrationForm::class, $user);
-        $form->handleRequest($request);
-        $user->setRoles(['ROLE_CLIENT']);
+        $form = $this->createForm(RegistrationForm::class, $user);//lier le formulaire d'inscription à l'entité User
+        $form->handleRequest($request);//recuperer les données du formulaire
+        $user->setRoles(['ROLE_CLIENT']);//le nom de rôle par défaut pour les nouveaux utilisateurs est 'ROLE_CLIENT'
 
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
-            $plainPassword = $form->get('plainPassword')->getData();
+            $plainPassword = $form->get('plainPassword')->getData();// récupérer le mot de passe en clair saisi par l'utilisateur
 
-            // encode the plain password
+            //hash du mdp et assignation à l'utilisateur
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-
+            // ajouter l'utilisateur à la base de données
             $entityManager->persist($user);
             $entityManager->flush();
+            //me diriger vers lapage de registration
+            return $this->render('registration/register.html.twig', [
+                'registrationForm' => $form,
+            ]);
+        }
 
+        // Always return a response if form is not submitted or not valid
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form,
+        ]);
+    }
+/*
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
@@ -52,13 +63,9 @@ class RegistrationController extends AbstractController
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_produit_index');
-        }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form,
-        ]);
-    }
-
+        }*/
+    
+/*
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request): Response
     {
@@ -66,7 +73,6 @@ class RegistrationController extends AbstractController
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            /** @var User $user */
             $user = $this->getUser();
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
@@ -79,5 +85,6 @@ class RegistrationController extends AbstractController
         $this->addFlash('success', 'Your email address has been verified.');
 
         return $this->redirectToRoute('app_register');
+    }*/
+
     }
-}

@@ -36,7 +36,7 @@ public function index(
 
     $totalCommandes = $commandeRepository->count([]);
     $totalUtilisateurs = $userRepository->count([]);
-
+//passer la somme des stocks de produits, le nombre de commandes et le nombre d'utilisateurs à la vue admin
     return $this->render('admin/index.html.twig', [
         'totalProduits' => $totalProduits,
         'totalCommandes' => $totalCommandes,
@@ -90,7 +90,7 @@ public function new(Request $request, EntityManagerInterface $em, SluggerInterfa
         // Gestion de la catégorie
         $categoryName = $form->get('category_name')->getData();
         $category = $categoryRepository->findOneBy(['name' => $categoryName]);
-        if (!$category) {
+        if (!$category) {//si la categorie qu'on souhaite ajouter n'existe pas on la crée
             $category = new Category();
             $category->setName($categoryName);
             $em->persist($category);
@@ -99,7 +99,7 @@ public function new(Request $request, EntityManagerInterface $em, SluggerInterfa
         // Gestion de l'artiste
         $artistName = $form->get('artist_name')->getData();
         $artist = $artistRepository->findOneBy(['name' => $artistName]);
-        if (!$artist) {
+        if (!$artist) {//si l'artiste qu'on souhaite ajouter n'existe pas on le crée
             $artist = new Artist();
             $artist->setName($artistName);
             $em->persist($artist);
@@ -110,14 +110,15 @@ public function new(Request $request, EntityManagerInterface $em, SluggerInterfa
 
         // Gestion de l'image
         $imageFile = $form->get('image')->getData();
-        if ($imageFile) {
+        if ($imageFile) {//si l'utilisateur a ajouté une image
             $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $slugger->slug($originalFilename);
+            $safeFilename = $slugger->slug($originalFilename);//pour securiser le nom de fichier s'il contient des chemins ou des caractères spéciaux par exemple
             $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-
+//uniqid va generer un id pour le fichier à partir du timestamp actuel, ce qui garantit que le nom de fichier est unique
+//guessExtension va deviner l'extension du fichier à partir de son type MIME
             try {
                 $imageFile->move(
-                    $this->getParameter('uploads_directory'), 
+                    $this->getParameter('uploads_directory'), //uploads_directory est un paramètre défini dans config/services.yaml pour spécifier le répertoire de destination où les fichiers seront stockés
                     $newFilename
                 );
             } catch (FileException $e) {
@@ -157,7 +158,7 @@ public function edit(
         // Artiste
         $artistName = trim($request->request->get('artiste'));
         $artist = $artistRepository->findOneBy(['name' => $artistName]);
-        if (!$artist && $artistName !== '') {
+        if (!$artist && $artistName !== '') {//si l'artiste n'existe pas et que le nom de l'artiste n'est pas vide
             $artist = new Artist();
             $artist->setName($artistName);
             $em->persist($artist);
@@ -173,7 +174,7 @@ public function edit(
             $category = new Category();
             $category->setName($categoryName);
             $em->persist($category);
-            $em->flush(); // pour avoir un ID valide
+            $em->flush(); 
         }
 
         $produit->setCategory($category);

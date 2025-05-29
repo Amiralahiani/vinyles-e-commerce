@@ -17,27 +17,30 @@ class RegistrationForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        //rendre les champs email et mdp visibles
             ->add('email')
+        //checkbox pour accepter les conditions d'utilisation
             ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
+                'mapped' => false,// ne pas lier ce champ à l'entité User
                 'constraints' => [
-                    new IsTrue([
+                    new IsTrue([//doit etre coché sinon erreur
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
             ])
+            //champ pwd en clair non mappé à l'entité User directement
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => ['autocomplete' => 'new-password'],//indique que c un nouveau pwd et il ne doit pas être pré-rempli
                 'constraints' => [
-                    new NotBlank([
+                    new NotBlank([// le champ ne doit pas être vide
                         'message' => 'Please enter a password',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',//limit sera remplacé par la valeur de min (ici 6)
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
@@ -47,7 +50,7 @@ class RegistrationForm extends AbstractType
     }
 
     public function configureOptions(OptionsResolver $resolver): void
-    {
+    {//lier le formulaire à l'entité User
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
