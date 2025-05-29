@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 final class CommandeController extends AbstractController
 {
@@ -76,6 +76,17 @@ final class CommandeController extends AbstractController
         'commande' => $commande,
         'items' => $items,
         'total' => $panierService->getTotal(),
+    ]);
+}
+
+#[Route('/mes-commandes', name: 'app_mes_commandes')]
+public function mesCommandes(CommandeRepository $commandeRepository): Response
+{
+    $user = $this->getUser();
+    $commandes = $commandeRepository->findBy(['user' => $user], ['createdAt' => 'DESC']);
+
+    return $this->render('commande/mes_commandes.html.twig', [
+        'commandes' => $commandes
     ]);
 }
 }
