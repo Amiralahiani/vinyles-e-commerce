@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages reçus{% endblock %}
+
+{% block content %}
+<h2 class="text-xl font-bold mb-4">Liste des messages</h2>
+
+<table class="w-full border-collapse border border-gray-300">
+    <thead>
+        <tr class="bg-gray-100">
+            <th class="border p-2">Email</th>
+            <th class="border p-2">Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for message in messages %}
+            <tr>
+                <td class="border p-2">{{ message.email }}</td>
+                <td class="border p-2">{{ message.content }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2" class="border p-2 text-center">Aucun message reçu.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

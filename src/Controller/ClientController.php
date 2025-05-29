@@ -11,9 +11,11 @@ final class ClientController extends AbstractController
 {
     #[Route('/client', name: 'client_dashboard')]
     #[IsGranted('ROLE_USER')]
-public function index(): Response
+public function index(\App\Repository\ProduitRepository $produitRepository): Response
 {
-    return $this->render('client/index.html.twig');
+     return $this->render('home/index.html.twig', [
+            'controller_name' => 'ClientController',
+            'produits' => $produitRepository->findAll(),
+        ]);
 }
-
 }

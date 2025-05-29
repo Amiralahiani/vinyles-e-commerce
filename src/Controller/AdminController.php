@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Repository\ContactMessageRepository;
 
 use App\Repository\CategoryRepository;
 use App\Repository\ArtistRepository;
@@ -208,13 +209,25 @@ public function edit(
     ]);
 }
 
+#[Route('/admin/messages', name: 'admin_messages')]
+public function showMessages(ContactMessageRepository $repo): Response
+{
+    $messages = $repo->findAll();
 
-
-    
-
-
-
-
-    
+    return $this->render('admin/messages.html.twig', [
+        'messages' => $messages,
+    ]);
+}
 
 }
+
+
+
+    
+
+
+
+
+    
+
+

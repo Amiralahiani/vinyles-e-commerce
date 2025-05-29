@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}Groove Commerce{% endblock %}</title>
-  <link rel="icon" href="{{ asset('uploads/produits/im.png') }}" type="image/png">
-  <link rel="apple-touch-icon" href="{{ asset('uploads/produits/im.png') }}">
+  <link rel="icon" href="{{ asset('uploads/produits/im.png') }}" type="image/png" />
+  <link rel="apple-touch-icon" href="{{ asset('uploads/produits/im.png') }}" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
   {% block styles %}{% endblock %}
 </head>
 
-<body class="min-h-screen flex flex-col bg-gradient-to-br from-white via-[#e5f7f8] to-gray-100 text-[#1e1e1e]">
-
+<body
+  class="min-h-screen flex flex-col bg-gradient-to-br from-white via-[#e5f7f8] to-gray-100 text-[#1e1e1e]"
+>
   <!-- Header -->
   <header class="bg-[#e5f7f8] fixed top-0 left-0 right-0 z-50 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center py-4">
         <!-- Logo -->
         <div class="flex items-center space-x-2">
-          <img src="{{ asset('uploads/produits/im.png') }}" alt="logo" class="w-9 h-8">
-          <span class="font-bold text-lg text-[#9b0d1f]"><a href="{{ path('app_home') }}">Retro Commerce</a></span>
+          <img src="{{ asset('uploads/produits/im.png') }}" alt="logo" class="w-9 h-8" />
+          <span class="font-bold text-lg text-[#9b0d1f]"
+            ><a href="{{ path('app_home') }}">Retro Commerce</a></span
+          >
         </div>
 
         <!-- Hamburger Button -->
@@ -33,8 +41,12 @@
 
         <!-- Desktop Navigation -->
         <nav class="hidden lg:flex space-x-6 items-center">
-          <a href="{{ path('app_home') }}" class="text-sm font-medium text-[#1e1e1e]">Accueil</a>
-          <a href="{{ path('app_produit_index') }}" class="text-sm font-medium text-[#1e1e1e]">Vinyles</a>
+          <a href="{{ path('app_home') }}" class="text-sm font-medium text-[#1e1e1e]"
+            >Accueil</a
+          >
+          <a href="{{ path('app_produit_index') }}" class="text-sm font-medium text-[#1e1e1e]"
+            >Vinyles</a
+          >
           <form method="get" action="{{ path('app_recherche') }}" class="flex">
             <input
               type="text"
@@ -43,21 +55,34 @@
               class="w-32 md:w-48 lg:w-64 px-3 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-[#9b0d1f]"
             />
           </form>
-          <a href="{{ path('panier_index') }}" class="text-lg text-[#1e1e1e]"><i class="fas fa-shopping-cart"></i></a>
-
+          <a href="{{ path('panier_index') }}" class="text-lg text-[#1e1e1e]"
+            ><i class="fas fa-shopping-cart"></i
+          ></a>
+          {# Boutons connexion/déconnexion #}
           {% if app.user %}
-              <a href="{{ path('app_mes_commandes') }}" class="text-sm font-medium text-[#1e1e1e]">Mes commandes</a>
-              <a href="{{ path('app_logout') }}"><button class="border px-3 py-1 rounded text-sm text-[#1e1e1e]">Se déconnecter</button></a>
+          <a href="{{ path('app_logout') }}">
+            <button class="border px-3 py-1 rounded text-sm text-[#1e1e1e]">
+              Se déconnecter
+            </button>
+          </a>
           {% else %}
-              <a href="{{ path('app_login') }}"><button class="border px-3 py-1 rounded text-sm text-[#1e1e1e]">Se connecter</button></a>
+          <a href="{{ path('app_login') }}">
+            <button class="border px-3 py-1 rounded text-sm text-[#1e1e1e]">
+              Se connecter
+            </button>
+          </a>
           {% endif %}
         </nav>
       </div>
 
       <!-- Mobile Menu -->
       <div id="mobile-menu" class="lg:hidden hidden flex-col space-y-4 pb-4">
-        <a href="{{ path('app_home') }}" class="block text-sm font-medium text-[#1e1e1e]">Accueil</a>
-        <a href="{{ path('app_produit_index') }}" class="block text-sm font-medium text-[#1e1e1e]">Vinyles</a>
+        <a href="{{ path('app_home') }}" class="block text-sm font-medium text-[#1e1e1e]"
+          >Accueil</a
+        >
+        <a href="{{ path('app_produit_index') }}" class="block text-sm font-medium text-[#1e1e1e]"
+          >Vinyles</a
+        >
         <form method="get" action="{{ path('app_recherche') }}" class="flex">
           <input
             type="text"
@@ -66,8 +91,24 @@
             class="w-32 md:w-48 lg:w-64 px-3 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-[#9b0d1f]"
           />
         </form>
-        <a href="{{ path('panier_index') }}" class="block text-lg text-[#1e1e1e]"><i class="fas fa-shopping-cart"></i> Panier</a>
-        <a href="{{ path('app_login') }}"><button class="border px-3 py-1 rounded text-sm text-[#1e1e1e] w-full">Se connecter</button></a>
+        <a href="{{ path('panier_index') }}" class="block text-lg text-[#1e1e1e]"
+          ><i class="fas fa-shopping-cart"></i> Panier</a
+        >
+
+        {# Ajout condition connexion/déconnexion pour mobile #}
+        {% if app.user %}
+        <a href="{{ path('app_logout') }}">
+          <button class="border px-3 py-1 rounded text-sm text-[#1e1e1e] w-full">
+            Se déconnecter
+          </button>
+        </a>
+        {% else %}
+        <a href="{{ path('app_login') }}">
+          <button class="border px-3 py-1 rounded text-sm text-[#1e1e1e] w-full">
+            Se connecter
+          </button>
+        </a>
+        {% endif %}
       </div>
     </div>
   </header>
@@ -82,7 +123,7 @@
     <div class="flex flex-wrap justify-between">
       <div class="w-full sm:w-1/3 mb-4">
         <div class="flex items-center space-x-2">
-          <img src="{{ asset('uploads/produits/im.png') }}" alt="logo" class="w-6 h-6">
+          <img src="{{ asset('uploads/produits/im.png') }}" alt="logo" class="w-6 h-6" />
           <span class="font-bold">Retro Commerce</span>
         </div>
         <p class="text-sm mt-2">Votre destination pour les vinyles de qualité.</p>
@@ -99,7 +140,7 @@
         <h4 class="font-semibold mb-2">Informations</h4>
         <ul class="text-sm space-y-1">
           <li><a href="{{ path('app_apropos') }}">À propos</a></li>
-          <li><a href="{{ path('app_contact') }}">Contact</a></li>
+          <li><a href="{{ path('app_contact_message') }}">Contact</a></li>
         </ul>
       </div>
     </div>
@@ -118,7 +159,7 @@
       header.classList.toggle("shadow-md", window.scrollY > 20);
     });
 
-    document.getElementById('menu-toggle')?.addEventListener("click", () => {
+    document.getElementById("menu-toggle")?.addEventListener("click", () => {
       document.getElementById("mobile-menu").classList.toggle("hidden");
     });
   </script>
