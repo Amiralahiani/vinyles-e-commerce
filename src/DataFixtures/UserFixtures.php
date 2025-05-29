@@ -22,7 +22,7 @@ class UserFixtures extends Fixture
         $admin = new User();
         $admin->setEmail('admin@example.com');
         $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setIsVerified(true); // important si tu vérifies l’email dans ton système
+        
 
         $hashedPassword = $this->passwordHasher->hashPassword($admin, 'admin123');
         $admin->setPassword($hashedPassword);
