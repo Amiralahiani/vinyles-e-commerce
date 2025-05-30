@@ -29,11 +29,15 @@
               <!-- Formulaire de mise à jour quantité -->
               <form method="post" action="{{ path('panier_update', { id: produit.id }) }}">
                 <input type="number" name="quantity" value="{{ quantite }}" min="1" class="w-16 px-2 py-1 border rounded">
+              
+
+                <button type="submit" class="ml-2 text-sm text-blue-600 hover:underline">Mettre à jour</button>
               </form>
 
               <!-- Formulaire de suppression -->
               <form method="post" action="{{ path('panier_delete', { id: produit.id }) }}">
                 <button type="submit" class="text-sm text-red-500 hover:underline">Supprimer</button>
+                
               </form>
             </div>
           </div>
